@@ -10,11 +10,13 @@ public class TestMain {
         ArrayList<String> methodLIst = new ArrayList<>();
 
         try {
-            File myObj = new File("src/Math2.java");
+            //File myObj = new File("src/Math1.java");
+            File myObj = new File("src/data.txt");
+
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                if( data.contains("(") && data.contains(")") && !data.contains(";")&& checkReturnType(data)){
+                if( data.contains("(")  && !data.contains(";")&& checkReturnType(data)){
                     counter = 1;
                 }
                 if(counter >0){
@@ -41,12 +43,12 @@ public class TestMain {
         }
 
 
-        System.out.println(methodLIst.size());
+        System.out.println(methodLIst);
 
     }
 
     public static boolean checkReturnType(String data){
         return  (data.contains("int") || data.contains("void" ) || data.contains("float") ||
-                data.contains("double") || data.contains("String") || data.contains("boolean"));
+                data.contains("double") || data.contains("String") || data.contains("bool") || data.contains("boolean") || data.contains("string"));
     }
 }

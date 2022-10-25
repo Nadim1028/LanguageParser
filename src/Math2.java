@@ -29,6 +29,16 @@ public class Math2 {
         return 5 + x;
     }
 
+    public int addTwoInt(int a, int b)
+    {
+
+        // Adding two integer value
+        int sum = a + b;
+
+        // Returning summation of two values
+        return sum;
+    }
+
     static void checkAge(int age) {
 
         if (age < 18) {
@@ -37,6 +47,11 @@ public class Math2 {
         } else {
             System.out.println("Access granted - You are old enough!");
         }
+        for(int i=0;i<10;i++){
+            System.out.println(i);
+        }
+
+        int nint = (5*6);
 
     }
 
