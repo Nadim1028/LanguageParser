@@ -2,13 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b970b0a1-30df-4436-b9bf-8fe28a96a4b6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Parser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PracticeJava/Math2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PracticeJava/Math2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PracticeJava/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PracticeJava/Parser.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/PracticeJava/TestMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PracticeJava/TestMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Math2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Math2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PracticeJava/data.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Math1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Math1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TestMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/data.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,16 +27,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="2GUOg51iVdOqZqyj1lWpqnlF4eL" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
@@ -74,6 +81,7 @@
       </list>
     </option>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -87,46 +95,15 @@
     </task>
     <servers />
   </component>
-  <component name="WindowStateProjectService">
-    <state width="1493" height="321" key="GridCell.Tab.0.bottom" timestamp="1666729228875">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="321" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1666729228875" />
-    <state width="1493" height="321" key="GridCell.Tab.0.center" timestamp="1666729228875">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="321" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1666729228875" />
-    <state width="1493" height="321" key="GridCell.Tab.0.left" timestamp="1666729228875">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="321" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1666729228875" />
-    <state width="1493" height="321" key="GridCell.Tab.0.right" timestamp="1666729228875">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="321" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1666729228875" />
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1666470039146">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1666470039146" />
-    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1666470039146">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1666470039146" />
-    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1666470039146">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1666470039146" />
-    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1666470039146">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1666470039146" />
-    <state x="465" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1666721225879">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="465" y="238" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1666721225879" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1666727897014">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1666727897014" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

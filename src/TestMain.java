@@ -11,7 +11,7 @@ public class TestMain {
 
         try {
             //File myObj = new File("src/Math1.java");
-            File myObj = new File("src/data.txt");
+            File myObj = new File("src/data.java");
 
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
