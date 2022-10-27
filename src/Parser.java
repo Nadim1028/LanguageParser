@@ -8,7 +8,7 @@ public class Parser
     public static void main(String[] args) throws FileNotFoundException
     {
 
-        ArrayList<String> variableList = new ArrayList<>();
+        ArrayList<String> templateConversion = new ArrayList<>();
         ArrayList<String> variableConversion = new ArrayList<>();
         ArrayList<String> userInputConversion = new ArrayList<>();
         ArrayList<String> conditionConversion = new ArrayList<>();
@@ -18,7 +18,7 @@ public class Parser
         int variableCounter=0;
 
         //File myObj = new File("src/Math1.java");
-            File myObj = new File("src/Java.txt");
+            File myObj = new File("src/C.txt");
 
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
@@ -30,21 +30,28 @@ public class Parser
                         line.contains(")") && !(line.contains("nextInt()") || line.contains("nextLine()") || line.contains("nextDouble()")
                         || line.contains("nextFloat()") ) ) )
                 {
-                    System.out.println(line);
+                    //System.out.println(line);
 
-                    if(line.contains(",")){
+                    if(line.contains(",") && !line.contains("char")){
                         //System.out.println("A"+variableCounter);
                         variableCounter += charCounter(line,',')+1;
 
                         for(int i = 0; i<= charCounter(line,','); i++){
                             addTemplateConversion(line,variableConversion);
+                            addTemplateConversion(line,templateConversion);
                         }
 
                     }
-                    else if(!line.contains(",")){
+                    else if(!line.contains(",")  ){
                         //System.out.println("A"+variableCounter);
                         variableCounter += 1;
                         addTemplateConversion(line,variableConversion);
+                        addTemplateConversion(line,templateConversion);
+                    }
+
+                    else if(line.contains("char")){
+                        addTemplateConversion(line,variableConversion);
+                        addTemplateConversion(line,templateConversion);
                     }
 
                 }
@@ -57,37 +64,56 @@ public class Parser
                         if(charCounter(line,',')>1){
                             for (int i = 0; i< charCounter(line,','); i++){
                                 userInputConversion.add("INPUT");
+                                templateConversion.add("INPUT");
                             }
                         }
 
-                        else
+                        else{
                             userInputConversion.add("INPUT");
+                            templateConversion.add("INPUT");
+                        }
                     }
 
                     else if(line.contains(">>")){
                         if(charCounter(line,'>')>2){
                             for (int i = 0; i< charCounter(line,'>')/2; i++){
                                 userInputConversion.add("INPUT");
+                                templateConversion.add("INPUT");
                             }
                         }
 
-                        else
+                        else{
                             userInputConversion.add("INPUT");
+                            templateConversion.add("INPUT");
+                        }
+
                     }
 
-                    else
+                    else{
                         userInputConversion.add("INPUT");
+                        templateConversion.add("INPUT");
+                    }
                 }
 
 
                 //condition conversion
                 if((!line.contains(";") && (line.contains("if") || line.contains("else if"))) || line.contains("else")){
                     conditionConversion.add("CONDITION");
+                    templateConversion.add("CONDITION");
+                }
+
+                //loop conversion
+                if((!line.contains(";") && (line.contains("while") || line.contains("do"))) || line.contains("for")){
+                    //conditionConversion.add("LOOP");
+                    templateConversion.add("LOOP");
                 }
             }
-            System.out.println(variableConversion);
-            System.out.println(userInputConversion);
-            System.out.println(conditionConversion);
+//            System.out.println(variableConversion);
+//            System.out.println(userInputConversion);
+//            System.out.println(conditionConversion);
+        for (String line :templateConversion) {
+            System.out.println(line);
+        }
     }
 
     public static boolean hasContainsValidDataType(String str){
