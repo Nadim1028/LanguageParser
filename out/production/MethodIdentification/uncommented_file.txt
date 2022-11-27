@@ -38,10 +38,10 @@ public class Math2 {
     public int addTwoInt(int a, int b)
     {
 
-        // Adding two integer value
+        
         int sum = a + b;
 
-        // Returning summation of two values
+        
         return sum;
     }
 
