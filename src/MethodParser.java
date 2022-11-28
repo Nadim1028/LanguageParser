@@ -9,8 +9,66 @@ import java.util.regex.Pattern;
 
 public class MethodParser
 {
-    public static void main(String[] args) throws IOException
-    {
+//    public static void main(String[] args) throws IOException
+//    {
+//        ArrayList<String> methodList = new ArrayList<>();
+//        ArrayList<String> methodSignatures = new ArrayList<>();
+//        ArrayList<Integer> locOfMethods = new ArrayList<>();
+//        ArrayList<Integer> argumentsPassedInMethods = new ArrayList<>();
+//        ArrayList<Integer> functionCallsInMethods = new ArrayList<>();
+//        ArrayList<Integer> returnStatements = new ArrayList<>();
+//        ArrayList<Integer> numOfLocalVariables = new ArrayList<>();
+//        ArrayList<Integer> numOfLoops = new ArrayList<>();
+//        ArrayList<Integer> numOfConditions = new ArrayList<>();
+//        RemoveComments removeComments = new RemoveComments();
+//        removeComments.createUncommentedSourceCode("src/Math2.java");
+//        File filePath = new File("src/clean_code.txt");
+//        extractMethods(methodList,methodSignatures,filePath);
+//        locOfMethods=getNumberOfLOC(methodList);
+//        getArgumentsOfEachMethod(methodSignatures,argumentsPassedInMethods);
+//        getNumberOfFunctionCalls(methodList,functionCallsInMethods);
+//        getNumberOfReturnStatements(methodList,returnStatements);
+//        getNumberOfLocalVariable(methodList,numOfLocalVariables);
+//        getNumberOfConditionsAndLoops(methodList,numOfConditions,numOfLoops);
+////        for (int num:numOfLoops){
+////            System.out.println(num);
+////        }
+//
+//
+//        ArrayList<ArrayList<Integer>> metrics =new ArrayList<ArrayList<Integer>>();
+//        metrics.add(locOfMethods);
+//        metrics.add(argumentsPassedInMethods);
+//        metrics.add(numOfLocalVariables);
+//        metrics.add(functionCallsInMethods);
+//        metrics.add(numOfConditions);
+//        metrics.add(numOfLoops);
+//        metrics.add(returnStatements);
+//
+//
+//        System.out.println(locOfMethods);
+//        System.out.println(argumentsPassedInMethods);
+//        System.out.println(numOfLocalVariables);
+//        System.out.println(functionCallsInMethods);
+//        System.out.println(numOfConditions);
+//        System.out.println(numOfLoops);
+//        System.out.println(returnStatements);
+//
+//        int[] [] metricsValue = new int[methodList.size()][7];
+//        for (int i=0;i<methodList.size();i++){
+//            for(int j=0;j<7;j++){
+//                metricsValue[i][j]= metrics.get(j).get(i);
+//            }
+//        }
+//
+//        for (int i = 0; i < metricsValue.length; i++) {
+//            for (int j = 0; j < metricsValue[i].length; j++) {
+//                System.out.print( metricsValue[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
+//    }
+
+    public  int[][] geMetricsValueOfMethods(String filePath) throws IOException {
         ArrayList<String> methodList = new ArrayList<>();
         ArrayList<String> methodSignatures = new ArrayList<>();
         ArrayList<Integer> locOfMethods = new ArrayList<>();
@@ -21,30 +79,34 @@ public class MethodParser
         ArrayList<Integer> numOfLoops = new ArrayList<>();
         ArrayList<Integer> numOfConditions = new ArrayList<>();
         RemoveComments removeComments = new RemoveComments();
-        removeComments.createUncommentedSourceCode("src/Math1.java");
-        File filePath = new File("src/clean_code.txt");
-        extractMethods(methodList,methodSignatures,filePath);
+        removeComments.createUncommentedSourceCode(filePath);
+        File file = new File("src/clean_code.txt");
+        extractMethods(methodList,methodSignatures,file);
         locOfMethods=getNumberOfLOC(methodList);
         getArgumentsOfEachMethod(methodSignatures,argumentsPassedInMethods);
         getNumberOfFunctionCalls(methodList,functionCallsInMethods);
         getNumberOfReturnStatements(methodList,returnStatements);
         getNumberOfLocalVariable(methodList,numOfLocalVariables);
         getNumberOfConditionsAndLoops(methodList,numOfConditions,numOfLoops);
-//        for (int num:numOfLoops){
-//            System.out.println(num);
-//        }
 
+        ArrayList<ArrayList<Integer>> metrics =new ArrayList<ArrayList<Integer>>();
+        metrics.add(locOfMethods);
+        metrics.add(argumentsPassedInMethods);
+        metrics.add(numOfLocalVariables);
+        metrics.add(functionCallsInMethods);
+        metrics.add(numOfConditions);
+        metrics.add(numOfLoops);
+        metrics.add(returnStatements);
 
-        System.out.println(locOfMethods);
-        System.out.println(argumentsPassedInMethods);
-        System.out.println(numOfLocalVariables);
-        System.out.println(functionCallsInMethods);
-        System.out.println(numOfConditions);
-        System.out.println(numOfLoops);
-        System.out.println(returnStatements);
+        int[] [] metricsValue = new int[methodList.size()][7];
+        for (int i=0;i<methodList.size();i++){
+            for(int j=0;j<7;j++){
+                metricsValue[i][j]= metrics.get(j).get(i);
+            }
+        }
+
+        return metricsValue;
     }
-
-    //blic static void
 
     public static void getNumberOfConditionsAndLoops(ArrayList<String> methodList, ArrayList<Integer> numOfConditions,ArrayList<Integer> numOfLoops){
         for(String method:methodList){

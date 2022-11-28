@@ -1,15 +1,15 @@
 public class Math2 {
     public static void main(String[] args) {
-        int num1, num2;
-        num1=1;
-        num2=5;
-        int num3 = (num1*num2)/2;
-        Math2 math2 = new Math2();
-        math2.printSum(num1,num2);
-        System.out.println(num2);
+        int n1, n2, n3;
+        float n=10;
+        n1=1;
+        n2=5;
+
+        n3 = n1+n2;
+        System.out.println(n3);
 
     }
-    public  int printSum(int num1, int num2){
+    public int printSum(int num1, int num2){
         booleanMethod();
         return num1+num2;
     }
