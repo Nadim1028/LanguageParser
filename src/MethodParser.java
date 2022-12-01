@@ -78,9 +78,13 @@ public class MethodParser
         ArrayList<Integer> numOfLocalVariables = new ArrayList<>();
         ArrayList<Integer> numOfLoops = new ArrayList<>();
         ArrayList<Integer> numOfConditions = new ArrayList<>();
+        ArrayList<Integer> numOfAssignmentStatements = new ArrayList<>();
+
+
         RemoveComments removeComments = new RemoveComments();
         removeComments.createUncommentedSourceCode(filePath);
         File file = new File("src/clean_code.txt");
+
         extractMethods(methodList,methodSignatures,file);
         locOfMethods=getNumberOfLOC(methodList);
         getArgumentsOfEachMethod(methodSignatures,argumentsPassedInMethods);
@@ -88,6 +92,7 @@ public class MethodParser
         getNumberOfReturnStatements(methodList,returnStatements);
         getNumberOfLocalVariable(methodList,numOfLocalVariables);
         getNumberOfConditionsAndLoops(methodList,numOfConditions,numOfLoops);
+        getNumberOfAssignmentOperations(methodList,numOfAssignmentStatements,numOfLocalVariables);
 
         ArrayList<ArrayList<Integer>> metrics =new ArrayList<ArrayList<Integer>>();
         metrics.add(locOfMethods);
@@ -98,6 +103,8 @@ public class MethodParser
         metrics.add(numOfLoops);
         metrics.add(returnStatements);
 
+        //System.out.println(methodList);
+
         int[] [] metricsValue = new int[methodList.size()][7];
         for (int i=0;i<methodList.size();i++){
             for(int j=0;j<7;j++){
@@ -107,6 +114,31 @@ public class MethodParser
 
         return metricsValue;
     }
+
+    public static void getNumberOfAssignmentOperations(ArrayList<String> methodList, ArrayList<Integer> numOfAssignmentStatements,ArrayList<Integer> numOfLocalVariables)
+    {
+        for(int i=0; i< methodList.size();i++){
+            Scanner scanner = new Scanner(methodList.get(i));
+            int assignmentCounter = 0,localVariableInAssignment=0;
+            while (scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                if(line.contains("=") && !(line.contains("=") && line.contains("for"))
+                        && !(line.contains("=") && line.contains("if")) && line.contains(";") && !line.contains("print"))  {
+                    System.out.println(line);
+                    assignmentCounter++;
+                    if(new LocalVariableCounter().hasContainsValidDataType(line)){
+                        System.out.println("********** "+line);
+                        localVariableInAssignment++;
+                    }
+
+                }
+
+            }
+            numOfAssignmentStatements.add(assignmentCounter);
+            numOfLocalVariables.set(i,numOfLocalVariables.get(i)+localVariableInAssignment);
+        }
+    }
+
 
     public static void getNumberOfConditionsAndLoops(ArrayList<String> methodList, ArrayList<Integer> numOfConditions,ArrayList<Integer> numOfLoops){
         for(String method:methodList){

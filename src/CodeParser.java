@@ -21,82 +21,98 @@ public class CodeParser
                 numOfFunctionCalls, numOfConditions, numOfLoops, numOfReturnStatements;
 
         //File myObj = new File("src/Math1.java");
-            File myObj = new File("src/Java.txt");
+        File myObj = new File("src/CPP2.txt");
 
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-        String line = myReader.nextLine();
-
-        //variable conversion
-        if(hasContainsValidDataType(line) && line.contains(";")  && !line.contains("for") && !line.contains("print") &&
-                !line.contains("printf") && !line.contains(" System.out.print") && !( line.contains("=") &&
-                line.contains(")") && !(line.contains("nextInt()") || line.contains("nextLine()") || line.contains("nextDouble()")
-                || line.contains("nextFloat()") ) ) )
+        Scanner myReader = new Scanner(myObj);
+        while (myReader.hasNextLine())
         {
-            System.out.println(line);
+            String line = myReader.nextLine();
 
-            if(line.contains(",")){
-                //System.out.println("A"+variableCounter);
-                variableCounter += charCounter(line,',')+1;
+            //variable conversion
 
-                for(int i = 0; i<= charCounter(line,','); i++){
-                    addTemplateConversion(line,variableConversion);
+            if(!(line.contains("(") && line.contains(")") && line.contains(";") && !line.contains("=")
+                    &&  !line.contains("printf") && !line.contains(" System.out.print")))
+            {
+                if(hasContainsValidDataType(line) && line.contains(";")  && !line.contains("for") && !line.contains("print") &&
+                        !line.contains("printf") && !line.contains(" System.out.print") && !( line.contains("=") &&
+                        line.contains(")") && !(line.contains("nextInt()") || line.contains("nextLine()") || line.contains("nextDouble()")
+                        || line.contains("nextFloat()") ) ) )
+                {
+                   // System.out.println(line);
+
+                    if(line.contains(",")){
+                        //System.out.println("A"+variableCounter);
+                        variableCounter += charCounter(line,',')+1;
+
+                        for(int i = 0; i<= charCounter(line,','); i++){
+                            addTemplateConversion(line,variableConversion);
+                        }
+
+                    }
+                    else if(!line.contains(",")){
+                        //System.out.println("A"+variableCounter);
+                        variableCounter += 1;
+                        addTemplateConversion(line,variableConversion);
+                    }
+
+                }
+            }
+
+            //assignment variable
+            if(line.contains("=") && !(line.contains("=") && line.contains("for"))
+                    && !(line.contains("=") && line.contains("if")) && line.contains(";") && !line.contains("print"))  {
+                //System.out.println(line);
+                if(hasContainsValidDataType(line))
+                    System.out.println(line);
+
+            }
+
+            //user input conversion
+            if(line.contains("scanf") || line.contains("cin") || line.contains("nextInt()") || line.contains("nextLine()") || line.contains("nextDouble()")
+                    || line.contains("nextFloat()") || line.contains("nextLong()") || line.contains("nextBoolean()"))
+            {
+                if(line.contains("%d") || line.contains("%f") || line.contains("%lf") || line.contains("%d") || line.contains("%s") || line.contains("%s")){
+                    if(charCounter(line,',')>1){
+                        for (int i = 0; i< charCounter(line,','); i++){
+                            userInputConversion.add("INPUT");
+                        }
+                    }
+
+                    else
+                        userInputConversion.add("INPUT");
                 }
 
-            }
-            else if(!line.contains(",")){
-                //System.out.println("A"+variableCounter);
-                variableCounter += 1;
-                addTemplateConversion(line,variableConversion);
-            }
-
-        }
-
-        //user input conversion
-        if(line.contains("scanf") || line.contains("cin") || line.contains("nextInt()") || line.contains("nextLine()") || line.contains("nextDouble()")
-                || line.contains("nextFloat()") || line.contains("nextLong()") || line.contains("nextBoolean()"))
-        {
-            if(line.contains("%d") || line.contains("%f") || line.contains("%lf") || line.contains("%d") || line.contains("%s") || line.contains("%s")){
-                if(charCounter(line,',')>1){
-                    for (int i = 0; i< charCounter(line,','); i++){
-                        userInputConversion.add("INPUT");
+                else if(line.contains(">>")){
+                    if(charCounter(line,'>')>2){
+                        for (int i = 0; i< charCounter(line,'>')/2; i++){
+                            userInputConversion.add("INPUT");
+                        }
                     }
+
+                    else
+                        userInputConversion.add("INPUT");
                 }
 
                 else
                     userInputConversion.add("INPUT");
             }
 
-            else if(line.contains(">>")){
-                if(charCounter(line,'>')>2){
-                    for (int i = 0; i< charCounter(line,'>')/2; i++){
-                        userInputConversion.add("INPUT");
-                    }
-                }
 
-                else
-                    userInputConversion.add("INPUT");
+            //condition conversion
+            if((!line.contains(";") && (line.contains("if") || line.contains("else if"))) || line.contains("else")){
+                conditionConversion.add("CONDITION");
             }
 
-            else
-                userInputConversion.add("INPUT");
+            //loop conversion
+            if((!line.contains(";") && (line.contains("while") || line.contains("do"))) || line.contains("for")){
+                //conditionConversion.add("LOOP");
+                loopConversion.add("LOOP");
+            }
         }
-
-
-        //condition conversion
-        if((!line.contains(";") && (line.contains("if") || line.contains("else if"))) || line.contains("else")){
-            conditionConversion.add("CONDITION");
-        }
-
-        //loop conversion
-        if((!line.contains(";") && (line.contains("while") || line.contains("do"))) || line.contains("for")){
-            //conditionConversion.add("LOOP");
-            loopConversion.add("LOOP");
-        }
-    }
-            System.out.println(variableConversion);
+            /*System.out.println(variableConversion);
             System.out.println(userInputConversion);
             System.out.println(conditionConversion);
+            System.out.println(loopConversion);*/
     }
 
     public static boolean hasContainsValidDataType(String str){
@@ -126,4 +142,5 @@ public class CodeParser
         }
     }
 }
+
 
