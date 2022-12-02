@@ -11,6 +11,7 @@ public class LocalVariableCounter {
                     line.contains(")") && !(line.contains("nextInt()") || line.contains("nextLine()") || line.contains("nextDouble()")
                     || line.contains("nextFloat()") ) ) )
             {
+
                 if(line.contains(",")){
                     //System.out.println("A"+variableCounter);
                     variableCounter += charCounter(line,',')+1;
@@ -23,6 +24,7 @@ public class LocalVariableCounter {
             }
         }
 
+        //System.out.println(variableCounter);
 
         return variableCounter;
     }

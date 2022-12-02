@@ -79,6 +79,8 @@ public class MethodParser
         ArrayList<Integer> numOfLoops = new ArrayList<>();
         ArrayList<Integer> numOfConditions = new ArrayList<>();
         ArrayList<Integer> numOfAssignmentStatements = new ArrayList<>();
+        ArrayList<Integer> numOfInputStatements = new ArrayList<>();
+        ArrayList<Integer> numOfOutputStatements = new ArrayList<>();
 
 
         RemoveComments removeComments = new RemoveComments();
@@ -92,7 +94,8 @@ public class MethodParser
         getNumberOfReturnStatements(methodList,returnStatements);
         getNumberOfLocalVariable(methodList,numOfLocalVariables);
         getNumberOfConditionsAndLoops(methodList,numOfConditions,numOfLoops);
-        getNumberOfAssignmentOperations(methodList,numOfAssignmentStatements,numOfLocalVariables);
+        getNumberOfAssignmentOperations(methodList,numOfAssignmentStatements,numOfLocalVariables,functionCallsInMethods);
+        getNumberOfInputStatements(methodList,numOfInputStatements);
 
         ArrayList<ArrayList<Integer>> metrics =new ArrayList<ArrayList<Integer>>();
         metrics.add(locOfMethods);
@@ -102,12 +105,14 @@ public class MethodParser
         metrics.add(numOfConditions);
         metrics.add(numOfLoops);
         metrics.add(returnStatements);
+        metrics.add(numOfAssignmentStatements);
+        metrics.add(numOfInputStatements);
+        //metrics.add(numOfOutputStatements);
 
-        //System.out.println(methodList);
 
-        int[] [] metricsValue = new int[methodList.size()][7];
+        int[] [] metricsValue = new int[methodList.size()][metrics.size()];
         for (int i=0;i<methodList.size();i++){
-            for(int j=0;j<7;j++){
+            for(int j=0;j<metrics.size();j++){
                 metricsValue[i][j]= metrics.get(j).get(i);
             }
         }
@@ -115,19 +120,82 @@ public class MethodParser
         return metricsValue;
     }
 
-    public static void getNumberOfAssignmentOperations(ArrayList<String> methodList, ArrayList<Integer> numOfAssignmentStatements,ArrayList<Integer> numOfLocalVariables)
+    public static void getNumberOfInputStatements(ArrayList<String> methodList, ArrayList<Integer> numOfInputStatements)
+    {
+        for(String method:methodList){
+            Scanner scanner = new Scanner(method);
+            int counter = 0;
+            while (scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                if(line.contains("scanf") || line.contains("cin") || line.contains("nextInt()") || line.contains("nextLine()") || line.contains("nextDouble()")
+                        || line.contains("nextFloat()") || line.contains("nextLong()") || line.contains("nextBoolean()"))
+                {
+                    if(line.contains("%d") || line.contains("%f") || line.contains("%lf") || line.contains("%d")
+                            || line.contains("%s") || line.contains("%s"))
+                    {
+                        if(charCounter(line,',')>1)
+                        {
+                            for (int i = 0; i< charCounter(line,','); i++)
+                            {
+                                counter++;
+                            }
+                        }
+                        else
+                            counter++;
+                    }
+
+                    else if(line.contains(">>"))
+                    {
+                        if(charCounter(line,'>')>2)
+                        {
+                            for (int i = 0; i< charCounter(line,'>')/2; i++)
+                            {
+                                counter++;
+                            }
+                        }
+                        else
+                            counter++;
+                    }
+                    else
+                        counter++;
+                }
+            }
+            numOfInputStatements.add(counter);
+        }
+    }
+
+    public static void getNumberOfAssignmentOperations(ArrayList<String> methodList, ArrayList<Integer> numOfAssignmentStatements, ArrayList<Integer> numOfLocalVariables, ArrayList<Integer> functionCallsInMethods)
     {
         for(int i=0; i< methodList.size();i++){
             Scanner scanner = new Scanner(methodList.get(i));
-            int assignmentCounter = 0,localVariableInAssignment=0;
+            int assignmentCounter = 0,localVariableInAssignment=0, functionCallInAssignment=0;
             while (scanner.hasNextLine()){
                 String line = scanner.nextLine();
-                if(line.contains("=") && !(line.contains("=") && line.contains("for"))
-                        && !(line.contains("=") && line.contains("if")) && line.contains(";") && !line.contains("print"))  {
+                if(line.contains("=") && !(line.contains("=") && line.contains("for")) && !(line.contains("=")  && line.contains("if")) && line.contains(";") && !line.contains("print")
+                ||  (charCounter(line,'=')>2 && line.contains("for")))  {
                     System.out.println(line);
-                    assignmentCounter++;
-                    if(new LocalVariableCounter().hasContainsValidDataType(line)){
-                        System.out.println("********** "+line);
+                    String splitLine="";
+                   if(!(charCounter(line,'=')>2 && line.contains("for")))
+                        splitLine = line.split("=",2)[1];
+
+                    if(splitLine.contains("(") && splitLine.contains(")") && splitLine.contains(";") && !splitLine.contains("=")
+                            &&  !splitLine.contains("printf") && !splitLine.contains(" System.out.print")){
+                        //System.out.println(splitLine);
+                        functionCallInAssignment++;
+                    }
+
+
+                    if(charCounter(line,'=')>1 && !line.contains("for"))
+                        assignmentCounter += charCounter(line,'=');
+                    else
+                        assignmentCounter++;
+
+                    if(new LocalVariableCounter().hasContainsValidDataType(line) &&
+                    !(line.contains(";")  && !line.contains("for") && !line.contains("print") &&
+                            !line.contains("printf") && !line.contains(" System.out.print") && !( line.contains("=") &&
+                            line.contains(")") && !(line.contains("nextInt()") || line.contains("nextLine()") ||
+                            line.contains("nextDouble()") || line.contains("nextFloat()") ) ))){
+                       // System.out.println("********** "+line);
                         localVariableInAssignment++;
                     }
 
@@ -136,6 +204,7 @@ public class MethodParser
             }
             numOfAssignmentStatements.add(assignmentCounter);
             numOfLocalVariables.set(i,numOfLocalVariables.get(i)+localVariableInAssignment);
+            functionCallsInMethods.set(i,functionCallsInMethods.get(i)+functionCallInAssignment);
         }
     }
 
@@ -146,7 +215,8 @@ public class MethodParser
             int conditionCounter = 0,loopCounter=0;
             while (scanner.hasNextLine()){
                 String line = scanner.nextLine();
-                if((!line.contains(";") && (line.contains("if") || line.contains("else if"))) || line.contains("else")) {
+                if(line.contains("if") || line.contains("else if") || line.contains("else")) {
+                 //   System.out.println(line);
                     conditionCounter += 1;
                 }
                 else if((!line.contains(";") && (line.contains("while") || line.contains("do"))) || (line.contains("for") && (line.contains("<") || line.contains("<")) && line.contains(";")) ) {
@@ -160,6 +230,7 @@ public class MethodParser
     }
 
     public static void getNumberOfLocalVariable(ArrayList<String> methodList, ArrayList<Integer> numOfLocalVariables){
+       // System.out.println("Size : "+methodList.size());
         for(String method:methodList){
             Scanner scanner = new Scanner(method);
             int counter = 0;
@@ -180,6 +251,7 @@ public class MethodParser
             while (scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 if(line.contains("return")){
+                   // System.out.println(line);
                     counter++;
                 }
             }
@@ -194,7 +266,8 @@ public class MethodParser
             while (scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 if(line.contains("(") && line.contains(")") && line.contains(";") && !line.contains("=")
-                        &&  !line.contains("printf") && !line.contains(" System.out.print")){
+                        && !line.contains("scanf") &&  !line.contains("cout") &&  !line.contains("printf") && !line.contains(" System.out.print")){
+                    //System.out.println(line);
                     counter++;
                 }
             }
