@@ -2,15 +2,16 @@ public class LocalVariableCounter {
     public int getValue(String line){
         int variableCounter = 0;
 
-        if(!(line.contains("(") && line.contains(")") && line.contains(";") && !line.contains("=")
-                &&  !line.contains("printf") && !line.contains(" System.out.print")))
+        if(!(line.contains("(") && line.contains(")") && line.contains(";") && !(line.contains("="))
+           &&  !line.contains("printf")   && !line.contains("cout") && !line.contains(" System.out.print")) &&
+                !line.contains("=") && !line.contains("{") && !line.contains("cout"))
         {
-
             if(hasContainsValidDataType(line) && line.contains(";")  && !line.contains("for") && !line.contains("print") &&
-                    !line.contains("printf") && !line.contains(" System.out.print") && !( line.contains("=") &&
-                    line.contains(")") && !(line.contains("nextInt()") || line.contains("nextLine()") || line.contains("nextDouble()")
-                    || line.contains("nextFloat()") ) ) )
+                    !line.contains("printf") && !line.contains(" System.out.print") && !( line.contains("=") && line.contains(")")
+                    && !( line.contains("=") && line.contains("}") ) && !(line.contains("nextInt()") || line.contains("nextLine()") ||
+                    line.contains("nextDouble()") || line.contains("nextFloat()") ) ) )
             {
+                //System.out.println(line);
 
                 if(line.contains(",")){
                     //System.out.println("A"+variableCounter);

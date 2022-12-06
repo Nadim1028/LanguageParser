@@ -20,8 +20,9 @@ public class LOC {
         while(sc.hasNextLine())
         {
             String str = sc.nextLine();
-            if(!str.isBlank()){
+            if(!str.isBlank() && !str.contains("cout") && !str.contains("printf") && !str.contains("System.out.print")){
                 loc += 1;
+                //System.out.println(str);
             }
         }
         sc.close();

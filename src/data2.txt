@@ -1,52 +1,90 @@
+// Java program for the above approach
 import java.io.*;
 import java.util.*;
+
 class GFG{
+
 static final int sz = 1001;
+
+// Store valid dimensions
 static boolean ok[][] = new boolean[sz][sz];
+
+// Stores memoization
 static int dp[][] = new int[sz][sz];
+
 static class pair
 {
 	int first, second;
+	
 	public pair(int first, int second)
 	{
 		this.first = first;
 		this.second = second;
 	}
 }
+
+// Utility function to calculate minimum invalid
+// area for Chocolate piece having dimension (l, r)
 static int minInvalidAreaUtil(int l, int b)
 {
 	if (dp[l][b] == -1)
 	{
+		
+		// Check whether current piece is valid
+		// or not. If it is, then return zero
+		// for current dimension
 		if (ok[l][b])
 		{
 			return dp[l][b] = 0;
 		}
+	
 		int ans = l * b;
+
+		// Making all possible horizontal cuts, one by
+		// one and calculating the sum of minimum invalid
+		// area for both the resulting pieces
 		for(int i = 1; i < b; i++)
 		{
 			ans = Math.min(ans,
 						minInvalidAreaUtil(l, i) +
 						minInvalidAreaUtil(l, b - i));
 		}
+
+		// Making all possible vertical cuts, one by one
+		// and calculating the sum of minimum invalid area
+		// for both the resulting pieces
 		for(int i = 1; i < l; i++)
 		{
 			ans = Math.min(ans,
 						minInvalidAreaUtil(i, b) +
 						minInvalidAreaUtil(l - i, b));
 		}
+
+		// Store the computed result
 		dp[l][b] = ans;
 	}
 	return dp[l][b];
 }
+
+// Function to calculate minimum invalid area for
+// Chocolate piece having dimension (l, r)
 static void minInvalidArea(int N, int M,
 						Vector<pair> dimensions)
 {
+	
+	// Total number of valid dimensions
 	int K = dimensions.size();
+
+	// Storing valid dimensions as for every (x, y)
+	// both (x, y) and (y, x) are valid
 	for(int i = 0; i < K; i++)
 	{
 		ok[dimensions.elementAt(i).first][dimensions.elementAt(i).second] = true;
 		ok[dimensions.elementAt(i).second][dimensions.elementAt(i).first] = true;
 	}
+
+	// Fill dp[][] table with -1, indicating that
+	// results are not computed yet
 	for(int i = 0; i < sz; i++)
 	{
 		for(int j = 0; j < sz; j++)
@@ -54,14 +92,28 @@ static void minInvalidArea(int N, int M,
 			dp[i][j] = -1;
 		}
 	}
+
+	// Stores minimum area
 	int minArea = minInvalidAreaUtil(N, M);
+
+	// Print minArea as the output
 	System.out.println(minArea);
 }
+
+// Driver Code
 public static void main(String[] args)
 {
+	
+	// Given N & M
 	int N = 10, M = 10;
+
+	// Given valid dimensions
 	Vector<pair > dimensions = new Vector<>();
 	dimensions.add(new pair(3, 5));
+
+	// Function Call
 	minInvalidArea(N, M, dimensions);
 }
 }
+
+// This code is contributed by Dharanendra L V.

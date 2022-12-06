@@ -1,39 +1,72 @@
-#include<iostream>
-#include<climits>
-#include<algorithm>
+#include<bits/stdc++.h>
 using namespace std;
+#define left 1
+#define top  2
+#define diagonal 3
+int c[100][100], b[100][100];
 
-int p[100][100], r[100][100];
-int rev(int m, int n)
+
+void PRINT_LCS(int b[100][100],char X[],int m,int n)
 {
-    if(r[m][n]>-1) 
-        return r[m][n];
+    if(m==0 || n==0)
+        return;
 
-    int x=INT_MIN, y=INT_MIN;
-
-    for(int i=1; i<=m; i++)
-        x=max(x, p[i][n]+rev(m-i, n));
-    for(int i=1; i<=n; i++)
-        y=max(y, p[m][i]+rev(m, n-i));
-
-    return r[m][n]=max(x, y);
+        if(b[m][n]==diagonal)
+    {
+        PRINT_LCS(b,X,m-1,n-1);
+        cout<<X[m]<<" ";
+    }
+    else if(b[m][n]==top)
+        PRINT_LCS(b,X,m-1,n);
+    else
+        PRINT_LCS(b,X,m,n-1);
 }
+ void LCS_LENGTH(char X[],char Y[],int m,int n)
+ {
+     for(int i=1;i<=m;i++)
+        c[i][0]=0;
 
-int main()
+    for(int j=0;j<=n;j++)
+        c[0][j]=0;
+
+        for(i=1;i<=m;i++)
+        {
+            for(j=1;j<=n;j++)
+            {
+                if(X[i]==Y[j])
+                {
+                    c[i][j]=c[i-1][j-1]+1;
+                    b[i][j]=diagonal;
+                }
+                else if(c[i-1][j]>=c[i][j-1])
+                {
+                    c[i][j]=c[i-1][j];
+                    b[i][j]=top;
+                }
+                else
+                {
+                    c[i][j]=c[i][j-1];
+                    b[i][j]=left;
+                }
+            }
+        }
+
+        cout<<"Length of the longest common subsequence is : "<<c[m][n]<<endl;
+
+        PRINT_LCS(b,X,m,n);
+
+ }
+int main(void)
 {
-    int m, n;
+    char X[100],Y[100];
+    int m,n,i,j;
+    cout<<"Enter the length of 1st and 2nd character array : ";
     cin>>m>>n;
-    for(int i=1; i<=m; i++)
-        for(int j=1; j<=n; j++)
-            cin>>p[i][j];
 
-    for(int i=0; i<=m; i++)
-        r[i][0]=0;
-    for(int i=0; i<=n; i++)
-        r[0][i]=0;
-    for(int i=1; i<=m; i++)
-        for(int j=1; j<=n; j++)
-            r[i][j]=-1;
+    for(i=1;i<=m;i++)
+        cin>>X[i];
 
-    cout<<"Max Revenue: "<<rev(m, n);
+    for(j=1;j<=n;j++)
+        cin>>Y[j];
+        LCS_LENGTH(X,Y,m,n);
 }

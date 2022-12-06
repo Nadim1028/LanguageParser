@@ -68,7 +68,43 @@ public class MethodParser
 //        }
 //    }
 
-    public  int[][] geMetricsValueOfMethods(String filePath) throws IOException {
+    String filePath;
+
+    public MethodParser(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public ArrayList<String> getMethods() throws IOException {
+        ArrayList<String> methodList = new ArrayList<>();
+        ArrayList<String> methodSignatures = new ArrayList<>();
+
+        RemoveComments removeComments = new RemoveComments();
+        removeComments.createUncommentedSourceCode(filePath);
+        File file = new File("src/clean_code.txt");
+
+        extractMethods(methodList,methodSignatures,file);
+        //System.out.println(methodList);
+
+        return methodList;
+
+    }
+
+    public ArrayList<String> getMethodSignatures() throws IOException {
+        ArrayList<String> methodList = new ArrayList<>();
+        ArrayList<String> methodSignatures = new ArrayList<>();
+
+        RemoveComments removeComments = new RemoveComments();
+        removeComments.createUncommentedSourceCode(filePath);
+        File file = new File("src/clean_code.txt");
+
+        extractMethods(methodList,methodSignatures,file);
+        //System.out.println(methodList);
+
+        return methodSignatures;
+
+    }
+
+    public  int[][] geMetricsValueOfMethods() throws IOException {
         ArrayList<String> methodList = new ArrayList<>();
         ArrayList<String> methodSignatures = new ArrayList<>();
         ArrayList<Integer> locOfMethods = new ArrayList<>();
@@ -116,6 +152,7 @@ public class MethodParser
                 metricsValue[i][j]= metrics.get(j).get(i);
             }
         }
+       // System.out.println(numOfLocalVariables);
 
         return metricsValue;
     }
@@ -171,10 +208,12 @@ public class MethodParser
             int assignmentCounter = 0,localVariableInAssignment=0, functionCallInAssignment=0;
             while (scanner.hasNextLine()){
                 String line = scanner.nextLine();
-                if(line.contains("=") && !(line.contains("=") && line.contains("for")) && !(line.contains("=")  && line.contains("if")) && line.contains(";") && !line.contains("print")
-                ||  (charCounter(line,'=')>2 && line.contains("for")))  {
-                    System.out.println(line);
-                    String splitLine="";
+                if(line.contains("=") && !(line.contains("=") && line.contains("for")) && !(line.contains("=")  && line.contains("else if")) && !(line.contains("=")  && line.contains("if"))
+                        && line.contains(";") && !line.contains("print") && !line.contains("cout") && !line.contains("System.out.print")
+                ||  (charCounter(line,'=')>2 && line.contains("for")))
+                {
+                   //System.out.println(line);
+                   String splitLine="";
                    if(!(charCounter(line,'=')>2 && line.contains("for")))
                         splitLine = line.split("=",2)[1];
 
@@ -190,13 +229,13 @@ public class MethodParser
                     else
                         assignmentCounter++;
 
-                    if(new LocalVariableCounter().hasContainsValidDataType(line) &&
-                    !(line.contains(";")  && !line.contains("for") && !line.contains("print") &&
-                            !line.contains("printf") && !line.contains(" System.out.print") && !( line.contains("=") &&
-                            line.contains(")") && !(line.contains("nextInt()") || line.contains("nextLine()") ||
-                            line.contains("nextDouble()") || line.contains("nextFloat()") ) ))){
-                       // System.out.println("********** "+line);
-                        localVariableInAssignment++;
+                    if(new LocalVariableCounter().hasContainsValidDataType(line)){
+                       //System.out.println("********** "+line);
+                        if(charCounter(line,'=')>1 && line.contains(",")){
+                            localVariableInAssignment += charCounter(line,'=');
+                        }
+                        else
+                            localVariableInAssignment++;
                     }
 
                 }
@@ -239,6 +278,7 @@ public class MethodParser
                 counter += new LocalVariableCounter().getValue(line);
 
             }
+            //System.out.println(counter);
             numOfLocalVariables.add(counter);
         }
 
@@ -328,7 +368,7 @@ public class MethodParser
             while(sc.hasNextLine())
             {
                 String str = sc.nextLine();
-                if(!str.isBlank() && str.trim().length()>1){
+                if(!str.isBlank() && str.trim().length()>1 && !str.contains("cout") && !str.contains("printf") && !str.contains("System.out.print")){
                     loc += 1;
                 }
             }
